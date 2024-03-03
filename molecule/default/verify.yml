@@ -4,10 +4,23 @@
   hosts: grp_tester
   gather_facts: false
   tasks:
-    - name: Checking if web-service is reachable
+    - name: Checking if web-service is reachable & loading
       ansible.builtin.uri:
-        url: 'https://aw.test.ansibleguy.net'
-        return_content: yes
+        url: 'https://aw.test.ansibleguy.net/a/login/'
+        return_content: true
         validate_certs: false
       register: page
-      failed_when: "'Ansible WebUI' not in page.content"
+      failed_when: >
+        'Ansible WebUI' not in page.content or
+        page.status != 200
+
+    - name: Checking if statics are working
+      ansible.builtin.uri:
+        url: 'https://aw.test.ansibleguy.net/static/img/logo.svg'
+        return_content: false
+        validate_certs: false
+      register: page_static
+      failed_when: >
+        page_static.failed or
+        page_static.content_type != 'image/svg+xml' or
+        page_static.status != 200

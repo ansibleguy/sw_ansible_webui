@@ -1,0 +1,19 @@
+---
+
+AW_HC:
+  module_name: 'ansibleguy-webui'
+  path:
+    config: '/etc/ansible-webui'
+    home: '/home/ansible-webui'
+  file_requirements:
+    pip: 'requirements.txt'
+    roles: 'requirements_roles.yml'
+    collections: 'requirements_collections.yml'
+  file:
+    db: 'aw.db'
+    secret: 'secret.env'
+  user: 'ansible-webui'
+  config_vars_managed: ['AW_DB', 'AW_HOSTNAMES', 'AW_SECRET', 'AW_PATH_LOG']
+
+random_pwd_length: '60'  # must be string-type
+tmp_pwd_file: '/tmp/.ansibleguy.sw_ansibleguy_webui'

@@ -1,0 +1,14 @@
+---
+
+- name: Ansible-WebUI | Checking config
+  ansible.builtin.assert:
+    that:
+      - "'AW_HOSTNAMES' in AW_CONFIG.config"
+      - AW_CONFIG.config['AW_HOSTNAMES'] | ensure_list | length > 0
+      - AW_CONFIG.config['AW_SECRET'] | default(none, true) is not none
+      - AW_CONFIG.config['AW_SECRET'] | length > 30
+  tags: always
+
+- name: Ansible-WebUI | Processing debian config
+  ansible.builtin.import_tasks: debian/main.yml
+  when: "ansible_distribution|lower in ['debian', 'ubuntu']"

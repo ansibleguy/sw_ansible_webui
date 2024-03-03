@@ -1,0 +1,10 @@
+---
+
+# ansible-playbook -K -D -i inventory/hosts.yml playbook.yml
+
+- name: Ansible-WebUI
+  hosts: all   # should be limited
+  become: true
+  gather_facts: yes
+  roles:
+    - ansibleguy.sw_ansible_webui

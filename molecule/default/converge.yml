@@ -1,0 +1,17 @@
+---
+
+- name: Converge
+  hosts: grp_targets
+  vars:
+    semaphore:
+      config:
+        AW_HOSTNAMES: 'aw.test.ansibleguy.net'
+
+
+      requirements:
+        pip: ['httpx']
+        collections: ['ansible.utils', 'community.crypto', 'community.general']
+        roles: ['ansibleguy.infra_nftables']
+
+  roles:
+    - ansibleguy.sw_ansible_webui

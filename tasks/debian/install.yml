@@ -1,0 +1,27 @@
+---
+
+- name: Ansible-WebUI | Install | Python3
+  ansible.builtin.apt:
+    name: ['python3', 'python3-pip', 'python3-virtualenv', 'git', 'git-lfs']
+    state: present
+
+- name: Ansible-WebUI | Install
+  ansible.builtin.pip:
+    requirements: "{{ AW_HC.path_config }}/{{ AW_HC.file_requirements.pip }}"
+    virtualenv: "{{ AW_CONFIG.path.venv }}"
+    state: present
+  notify: aw-restart
+
+- name: Ansible-WebUI | Install | Service
+  ansible.builtin.template:
+    src: 'templates/etc/systemd/system/ansible-webui.service.j2'
+    dest: "/etc/systemd/system/ansible-webui.service"
+    mode: 0644
+  notify: aw-restart
+
+- name: Ansible-WebUI | Install | Enabling Service
+  ansible.builtin.systemd:
+    name: 'ansible-webui.service'
+    daemon_reload: true
+    enabled: true
+    state: 'started'

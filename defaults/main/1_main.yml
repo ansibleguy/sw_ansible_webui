@@ -1,0 +1,61 @@
+---
+
+no_prompts: false
+debug: false
+
+# default config => is overwritten by provided config
+defaults_aw:
+  manage:
+    webserver: true  # install and configure local nginx with min-ca cert
+    user: true
+    backup: true
+    auto_upgrade: true
+
+  config:  # see: https://webui.ansibleguy.net/en/latest/usage/4_config.html#settings
+    AW_HOSTNAMES: []
+    AW_SECRET: "{{ lookup('password', tmp_pwd_file + '_mdb chars=ascii_letters,digits length=' + random_pwd_length) }}"
+
+  path:
+    log: '/var/log/ansible-webui'
+    venv: '/home/ansible-webui/venv'
+    backup: '/var/backups/ansible-webui'
+
+  requirements:
+    pip: ['jmespath', 'netaddr', 'passlib', 'pywinrm', 'requests', 'cryptography']
+    roles: []
+    collections: []
+
+  log:
+    cleanup: true
+    retention_days: 180
+
+  backup:
+    retention_days: 30
+    timer: '*-*-* 23:00:00'  # daily 23h
+
+  ansible_config: {}
+
+  nginx:  # configure the webserver settings => see: https://github.com/ansibleguy/infra_nginx
+    domain: ''
+    port_plain: 80
+    port_ssl: 443
+    ssl:
+      mode: 'ca'  # existing/selfsigned/ca/letsencrypt
+      cert:
+        name:
+        cn: 'Ansible-WebUI Certificate'
+        org: 'AnsibleGuy'
+
+      letsencrypt:
+        email: ''
+
+    proxy:
+      proto: 'http'
+      port: 8000
+
+    headers:
+      'X-Frame-Options': 'SAMEORIGIN'
+
+    security:
+      restrict_methods: true
+      allow_only_methods: ['GET', 'POST', 'PUT', 'DELETE']

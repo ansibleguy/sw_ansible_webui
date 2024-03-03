@@ -1,0 +1,56 @@
+---
+
+- name: Ansible-WebUI | Requirements | Python-Modules
+  ansible.builtin.copy:
+    content: |
+      # ansible_managed
+      # ansibleguy-webui pip requirements
+
+      {{ AW_HC.module_name }}
+
+      {% for module in AW_CONFIG.requirements.pip %}
+      {{ module }}
+      {% endfor %}
+
+    dest: "{{ AW_HC.path_config }}/{{ AW_HC.file_requirements.pip }}"
+    mode: 0640
+    owner: 'root'
+    group: "{{ AW_HC.user }}"
+
+- name: Ansible-WebUI | Requirements | Ansible-Collections
+  ansible.builtin.copy:
+    content: |
+      ---
+
+      # ansible_managed
+      # ansibleguy-webui ansible-collection requirements
+
+      collections:{% if AW_CONFIG.requirements.collections | length == 0 %} []{% else %}
+      {%   for collection in AW_CONFIG.requirements.collections %}
+        - '{{ collection }}'
+      {%   endfor %}
+      {% endif %}
+
+    dest: "{{ AW_HC.path_config }}/{{ AW_HC.file_requirements.collections }}"
+    mode: 0640
+    owner: 'root'
+    group: "{{ AW_HC.user }}"
+
+- name: Ansible-WebUI | Requirements | Ansible-Roles
+  ansible.builtin.copy:
+    content: |
+      ---
+
+      # ansible_managed
+      # ansibleguy-webui ansible-roles requirements
+
+      roles:{% if AW_CONFIG.requirements.roles | length == 0 %} []{% else %}
+      {%   for role in AW_CONFIG.requirements.roles %}
+        - '{{ role }}'
+      {%   endfor %}
+      {% endif %}
+
+    dest: "{{ AW_HC.path_config }}/{{ AW_HC.file_requirements.roles }}"
+    mode: 0640
+    owner: 'root'
+    group: "{{ AW_HC.user }}"

@@ -1,0 +1,4 @@
+---
+
+ansible_webui: {}
+AW_CONFIG: "{{ defaults_aw | combine(ansible_webui, recursive=true) }}"

@@ -1,0 +1,77 @@
+---
+
+- name: Ansible-WebUI | Showing debug info - user provided config
+  ansible.builtin.debug:
+    var: ansible_webui
+  when: debug | bool
+
+- name: Ansible-WebUI | Showing debug info - running config
+  ansible.builtin.debug:
+    var: AW_CONFIG
+  when: debug | bool
+
+- name: Ansible-WebUI | Service user
+  ansible.builtin.user:
+    name: "{{ AW_HC.user }}"
+    state: present
+    home: "{{ AW_HC.path.home }}"
+    shell: '/usr/sbin/nologin'
+  when: AW_CONFIG.manage.user | bool
+
+- name: Ansible-WebUI | Directories (read-only)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0750
+    owner: 'root'
+    group: "{{ AW_HC.user }}"
+  loop:
+    - "{{ AW_HC.path.config }}"
+    - "{{ AW_CONFIG.path.venv }}"
+    - "{{ AW_CONFIG.path.backup }}"
+
+- name: Ansible-WebUI | Directories (read-write)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0750
+    owner: "{{ AW_HC.user }}"
+    group: "{{ AW_HC.user }}"
+  loop:
+    - "{{ AW_HC.path.home }}"
+    - "{{ AW_CONFIG.path.log }}"
+
+- name: Ansible-WebUI | Requirements
+  ansible.builtin.import_tasks: debian/requirements.yml
+  tags: [config]
+
+- name: Ansible-WebUI | Install
+  ansible.builtin.import_tasks: debian/install.yml
+
+# todo: implement serve-static via nginx ('AW_SERVE_STATIC')
+- name: Ansible-WebUI | Installing/Configuring nginx
+  ansible.builtin.import_role:
+    name: ansibleguy.infra_nginx
+  when: AW_CONFIG.manage.webserver | bool
+  vars:
+    aw_nginx_config_overrides:
+      domain: "{{ AW_CONFIG.config['AW_HOSTNAMES'] | ensure_list | first }}"
+      aliases: "{{ [] if AW_CONFIG.config['AW_HOSTNAMES'] | ensure_list | length == 1 else AW_CONFIG.config['AW_HOSTNAMES'][1:] }}"
+
+    nginx:
+      sites:
+        ansible_webui: "{{ AW_CONFIG.server.nginx | combine(aw_nginx_config_overrides, recursive=true) }}"
+
+- name: Ansible-WebUI | Backup
+  ansible.builtin.import_tasks: debian/backup.yml
+  tags: [config, backup]
+  when: AW_CONFIG.manage.backup | bool
+
+- name: Ansible-WebUI | Cleaning up temporary password file
+  ansible.builtin.file:
+    path: "{{ tmp_pwd_file }}"
+    state: absent
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  tags: [always]

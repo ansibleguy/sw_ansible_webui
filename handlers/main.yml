@@ -1,0 +1,6 @@
+---
+
+- name: AW-restart
+  ansible.builtin.systemd:
+    name: 'ansible-webui.service'
+    state: 'restarted'

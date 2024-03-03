@@ -1,0 +1,37 @@
+---
+
+- name: Ansible-WebUI | Config | Checking if secret is set
+  ansible.builtin.stat:
+    path: "{{ AW_HC.path.config }}/{{ AW_HC.file.secret }}"
+  register: aw_secret_file
+  when: "'secret' not in ansible-webui"
+
+- name: Ansible-WebUI | Config | Secret
+  ansible.builtin.copy:
+    content: |
+      # ansible_managed
+
+      AW_SECRET={{ AW_CONFIG.config['AW_SECRET'] }}
+    dest: "{{ AW_HC.path.config }}/{{ AW_HC.file.secret }}"
+    mode: 0600
+    owner: 'root'
+    group: "{{ AW_HC.user }}"
+  when: "'secret' in ansible-webui or not aw_secret_file.stat.exists"
+  notify: aw-restart
+
+- name: Ansible-WebUI | Config | ansible.cfg
+  ansible.builtin.copy:
+    content: |
+      # ansible_managed
+      {% for section, config in AW_CONFIG.ansible_config.items() %}
+
+      [{{ section }}]
+      {%   for key, value in config.items() %}
+      {{ key }} = {{ value }}
+      {%   endfor %}
+      {% endfor %}
+    dest: "{{ AW_HC.path.home }}/ansible.cfg"
+    mode: 0640
+    owner: 'root'
+    group: "{{ AW_HC.user }}"
+  when: AW_CONFIG.ansible_config | length > 0

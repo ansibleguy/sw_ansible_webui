@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+# ansibleguy.sw_ansible_webui
+
+[Unit]
+Description=Timer to back-up Ansible-WebUI
+
+[Timer]
+OnCalendar={{ AW_CONFIG.backup.timer }}
+Persistent=false
+WakeSystem=false
+
+[Install]
+WantedBy=multi-user.target

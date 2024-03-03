@@ -1,0 +1,10 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Installing troubleshooting utils
+      ansible.builtin.apt:
+        name: ['less', 'nano', 'net-tools', 'dnsutils', 'iproute2']
+        state: present

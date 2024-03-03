@@ -11,4 +11,7 @@ class FilterModule(object):
         if isinstance(data, list):
             return data
 
+        if isinstance(data, str) and data.find(',') != -1:
+            return data.split(',')
+
         return [data]

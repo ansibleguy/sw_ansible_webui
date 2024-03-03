@@ -60,19 +60,8 @@
 - name: Ansible-WebUI | Handlers
   ansible.builtin.meta: flush_handlers
 
-# todo: implement serve-static via nginx ('AW_SERVE_STATIC')
-- name: Ansible-WebUI | Installing/Configuring nginx
-  ansible.builtin.import_role:
-    name: ansibleguy.infra_nginx
-  when: AW_CONFIG.manage.webserver | bool
-  vars:
-    aw_nginx_config_overrides:
-      domain: "{{ AW_CONFIG.config['AW_HOSTNAMES'] | ensure_list | first }}"
-      aliases: "{{ [] if AW_CONFIG.config['AW_HOSTNAMES'] | ensure_list | length == 1 else AW_CONFIG.config['AW_HOSTNAMES'][1:] }}"
-
-    nginx:
-      sites:
-        ansiblewebui: "{{ AW_CONFIG.nginx | combine(aw_nginx_config_overrides, recursive=true) }}"
+- name: Ansible-WebUI | Webserver
+  ansible.builtin.import_tasks: debian/webserver.yml
   tags: [webserver]
 
 - name: Ansible-WebUI | Cleaning up temporary password file

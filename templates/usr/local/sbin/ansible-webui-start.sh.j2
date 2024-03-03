@@ -5,7 +5,7 @@ set -euo pipefail
 {% if AW_CONFIG.log.cleanup | bool %}
 PATH_LOG="{{ AW_CONFIG.path.log }}"
 LOG_RETENTION_DAYS="{{ AW_CONFIG.log.retention_days }}"
-echo 'CLEANING OLD LOGS:'
+echo 'CLEANING OLD LOGS..'
 find "${PATH_LOG}/" -name "*.log" -type f -mtime +"$LOG_RETENTION_DAYS"
 find "${PATH_LOG}/" -name "*.log" -type f -mtime +"$LOG_RETENTION_DAYS" -delete
 {% endif %}

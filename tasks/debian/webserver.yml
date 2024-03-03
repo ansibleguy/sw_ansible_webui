@@ -1,0 +1,32 @@
+---
+
+- name: Ansible-WebUI | Webserver | Allow to read static-files
+  ansible.builtin.user:
+    name: 'www-data'
+    append: true
+    groups: "{{ AW_HC.user }}"
+
+- name: Ansible-WebUI | Resolve statics-path
+  ansible.builtin.command: "ls {{ AW_CONFIG.path.venv }}/lib/"
+  check_mode: false
+  changed_when: false
+  register: aw_venv_py_version
+
+# todo: implement serve-static via nginx ('AW_SERVE_STATIC')
+- name: Ansible-WebUI | Installing/Configuring nginx
+  ansible.builtin.import_role:
+    name: ansibleguy.infra_nginx
+  when: AW_CONFIG.manage.webserver | bool
+  vars:
+    aw_nginx_config_overrides:
+      domain: "{{ AW_CONFIG.config['AW_HOSTNAMES'] | ensure_list | first }}"
+      aliases: "{{ [] if AW_CONFIG.config['AW_HOSTNAMES'] | ensure_list | length == 1 else AW_CONFIG.config['AW_HOSTNAMES'][1:] }}"
+      config_additions:
+        - 'location ~ ^/static/ {'
+        - '  root {{ AW_CONFIG.path.venv }}/lib/{{ aw_venv_py_version.stdout_lines[0] }}/site-packages/ansibleguy-webui/aw/;'
+        - '  try_files $uri =404;'
+        - '}'
+
+    nginx:
+      sites:
+        ansiblewebui: "{{ AW_CONFIG.nginx | combine(aw_nginx_config_overrides, recursive=true) }}"

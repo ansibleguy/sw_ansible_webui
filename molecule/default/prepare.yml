@@ -6,5 +6,5 @@
   tasks:
     - name: Installing troubleshooting utils
       ansible.builtin.apt:
-        name: ['less', 'nano', 'net-tools', 'dnsutils', 'iproute2']
+        name: ['less', 'nano', 'net-tools']
         state: present

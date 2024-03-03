@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+{% if AW_CONFIG.log.cleanup | bool %}
+PATH_LOG="{{ AW_CONFIG.path.log }}"
+LOG_RETENTION_DAYS="{{ AW_CONFIG.log.retention_days }}"
+echo 'CLEANING OLD LOGS:'
+find "${PATH_LOG}/" -name "*.log" -type f -mtime +"$LOG_RETENTION_DAYS"
+find "${PATH_LOG}/" -name "*.log" -type f -mtime +"$LOG_RETENTION_DAYS" -delete
+{% endif %}
+
+source "{{ AW_CONFIG.path.venv }}/bin/activate"
+
+{% if AW_CONFIG.manage.auto_upgrade | bool %}
+echo 'UPGRADING REQUIREMENTS..'
+python3 -m pip install --upgrade -r "{{ AW_HC.path.config }}/{{ AW_HC.file_requirements.pip }}" >/dev/null
+ansible-galaxy collection install --upgrade -r "{{ AW_HC.path.config }}/{{ AW_HC.file_requirements.collections }}" >/dev/null
+ansible-galaxy role install --force -r "{{ AW_HC.path.config }}/{{ AW_HC.file_requirements.roles }}" >/dev/null
+{% endif %}
+
+echo 'STARTING..'
+source '/etc/ansible-webui/secret.sh'
+source '/etc/ansible-webui/env.sh'
+
+python3 -m {{ AW_HC.module_name }}

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+BACKUP_PATH="{{ AW_CONFIG.path.backup }}"
+BACKUP_FILE="${BACKUP_PATH}/aw_$(date '+%Y_%m_%d_%H_%M_%S').tar.xz"
+TMP_DIR='/tmp/ansible-webui-backup'
+RETENTION_DAYS='{{ AW_CONFIG.backup.retention_days }}'
+
+echo 'CREATING BACKUP'
+mkdir -p "$TMP_DIR"
+chmod 700 "$TMP_DIR"
+cp "{{ AW_HC.path.home }}/{{ AW_HC.file.db }}" "${TMP_DIR}/{{ AW_HC.file.db }}"
+cp "{{ AW_HC.path.config }}/{{ AW_HC.file.secret }}" "${TMP_DIR}/{{ AW_HC.file.secret }}"
+cp -r "{{ AW_CONFIG.path.log }}" "${TMP_DIR}/"
+tar -cJf "$BACKUP_FILE" "${TMP_DIR}/"
+chmod 600 "$BACKUP_FILE"
+rm -rf "$TMP_DIR"
+
+echo 'DELETING OLD BACKUPS:'
+find "${BACKUP_PATH}/" -name "aw_*.tar.xz" -type f -mtime +"$RETENTION_DAYS"
+find "${BACKUP_PATH}/" -name "aw_*.tar.xz" -type f -mtime +"$RETENTION_DAYS" -delete
+
+echo 'FINISHED'

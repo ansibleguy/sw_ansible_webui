@@ -3,10 +3,13 @@
 - name: Converge
   hosts: grp_targets
   vars:
-    semaphore:
-      config:
-        AW_HOSTNAMES: 'aw.test.ansibleguy.net'
+    no_prompts: true
 
+    ansible_webui:
+      config:
+        AW_HOSTNAMES: ['aw.test.ansibleguy.net', '192.168.17.2', '127.0.0.1']
+        AW_SSH_KNOWN_HOSTS: '/etc/ssh/known_hosts'
+        AW_TIMEZONE: 'CET'
 
       requirements:
         pip: ['httpx']

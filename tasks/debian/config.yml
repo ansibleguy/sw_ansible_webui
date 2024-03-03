@@ -4,20 +4,26 @@
   ansible.builtin.stat:
     path: "{{ AW_HC.path.config }}/{{ AW_HC.file.secret }}"
   register: aw_secret_file
-  when: "'secret' not in ansible-webui"
+  when: "'secret' not in ansible_webui"
 
 - name: Ansible-WebUI | Config | Secret
-  ansible.builtin.copy:
-    content: |
-      # ansible_managed
-
-      AW_SECRET={{ AW_CONFIG.config['AW_SECRET'] }}
+  ansible.builtin.template:
+    src: 'templates/etc/ansible-webui/secret.sh.j2'
     dest: "{{ AW_HC.path.config }}/{{ AW_HC.file.secret }}"
-    mode: 0600
+    mode: 0500
+    owner: "{{ AW_HC.user }}"
+    group: "{{ AW_HC.user }}"
+  notify: AW-restart
+  when: "'secret' in ansible_webui or not aw_secret_file.stat.exists"
+
+- name: Ansible-WebUI | Config | Environmental variables
+  ansible.builtin.template:
+    src: 'templates/etc/ansible-webui/env.sh.j2'
+    dest: '/etc/ansible-webui/env.sh'
+    mode: 0750
     owner: 'root'
     group: "{{ AW_HC.user }}"
-  when: "'secret' in ansible-webui or not aw_secret_file.stat.exists"
-  notify: aw-restart
+  notify: AW-restart
 
 - name: Ansible-WebUI | Config | ansible.cfg
   ansible.builtin.copy:

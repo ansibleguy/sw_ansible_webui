@@ -8,8 +8,6 @@ Role to provision [a basic WebUI for using Ansible](https://github.com/ansiblegu
 
 **DISCLAIMER**: This WebUI is an **unofficial community project**! Do not confuse it with the vanilla [Ansible](https://ansible.com/) product!
 
-todo: REPLACE: GALAXY_ID
-
 [![Molecule Test Status](https://badges.ansibleguy.net/sw_ansible_webui.molecule.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2)
 [![YamlLint Test Status](https://badges.ansibleguy.net/sw_ansible_webui.yamllint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/yamllint.sh.j2)
 [![PyLint Test Status](https://badges.ansibleguy.net/sw_ansible_webui.pylint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/pylint.sh.j2)
@@ -92,7 +90,7 @@ ansible_webui:
   manage:
     webserver: true  # install and configure local nginx with min-ca cert
     backup: true  # install service for daily local database backup (if database is managed)
-    user: true  # create service-user 'semaphore'
+    user: true  # create service-user 'ansible-webui'
     ansible_cfg: true  # provision /home/ansible-webui/ansible.cfg
 
   requirements:  # requirements your execution-environment needs
@@ -129,6 +127,7 @@ ansible-playbook -K -D -i inventory/hosts.yml playbook.yml
 
 There are also some useful **tags** available:
 * config
+* webserver
 
 To debug errors - you can set the 'debug' variable at runtime:
 ```bash

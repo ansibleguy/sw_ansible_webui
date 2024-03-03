@@ -6,17 +6,7 @@ Description=Ansible-WebUI Backup
 Documentation=https://github.com/ansibleguy/sw_ansible_webui
 
 [Service]
-ExecStart=/bin/bash -c 'BACKUP_FILE={{ AW_CONFIG.path.backup }}/aw_$(date '+%%Y_%%m_%%d_%%H_%%M_%%S').tar.xz && \
-                        mkdir /tmp/ansible-webui-backup && \
-                        chmod /tmp/ansible-webui-backup 700 &&
-                        cp {{ AW_HC.path.config }}/{{ AW_HC.file.db }} /tmp/ansible-webui-backup/{{ AW_HC.file.db }} && \
-                        cp {{ AW_HC.path.config }}/{{ AW_HC.file.secret }} /tmp/ansible-webui-backup/{{ AW_HC.file.secret }} && \
-                        cp -r {{ AW_HC.path.log }} /tmp/ansible-webui-backup/ && \
-                        tar -cJf /tmp/ansible-webui-backup/ -C "$BACKUP_FILE" && \
-                        chmod 600 "$BACKUP_FILE" && \
-                        rm -rf /tmp/ansible-webui-backup'
-ExecStartPost=/bin/bash -c 'echo "Deleting old backups:" && find {{ AW_CONFIG.path.backup }}/ -name "aw_*.tar.xz" -type f -mtime +{{ AW_CONFIG.backup.retention_days }}'
-ExecStartPost=/bin/bash -c 'find {{ AW_CONFIG.path.backup }}/ -name "aw_*.tar.xz" -type f -mtime +{{ AW_CONFIG.backup.retention_days }} -delete'
+ExecStart=/usr/local/sbin/ansible-webui-backup.sh
 
 {% if ansible_distribution_version == '10' %}
 StandardOutput=syslog

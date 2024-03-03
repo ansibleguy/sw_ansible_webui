@@ -1,5 +1,11 @@
 ---
 
+- name: Ansible-WebUI | Backup | Script
+  ansible.builtin.template:
+    src: 'templates/usr/local/sbin/ansible-webui-backup.sh.j2'
+    dest: '/usr/local/sbin/ansible-webui-backup.sh'
+    mode: 0750
+
 - name: Ansible-WebUI | Backup | Service & Timer
   ansible.builtin.template:
     src: "templates/etc/systemd/system/ansible-webui-backup.{{ item }}.j2"

@@ -7,17 +7,26 @@
 
 - name: Ansible-WebUI | Install
   ansible.builtin.pip:
-    requirements: "{{ AW_HC.path_config }}/{{ AW_HC.file_requirements.pip }}"
+    requirements: "{{ AW_HC.path.config }}/{{ AW_HC.file_requirements.pip }}"
     virtualenv: "{{ AW_CONFIG.path.venv }}"
     state: present
-  notify: aw-restart
+  notify: AW-restart
+
+- name: Ansible-WebUI | Install | Startup-Script
+  ansible.builtin.template:
+    src: 'templates/usr/local/sbin/ansible-webui-start.sh.j2'
+    dest: '/usr/local/sbin/ansible-webui-start.sh'
+    mode: 0750
+    owner: 'root'
+    group: "{{ AW_HC.user }}"
+  notify: AW-restart
 
 - name: Ansible-WebUI | Install | Service
   ansible.builtin.template:
     src: 'templates/etc/systemd/system/ansible-webui.service.j2'
     dest: "/etc/systemd/system/ansible-webui.service"
     mode: 0644
-  notify: aw-restart
+  notify: AW-restart
 
 - name: Ansible-WebUI | Install | Enabling Service
   ansible.builtin.systemd:

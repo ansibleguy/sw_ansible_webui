@@ -2,8 +2,6 @@
 
 dependency:
   name: galaxy
-#  options:
-#    requirements-file: 'requirements.yml'
 driver:
   name: docker
 platforms:
@@ -16,11 +14,11 @@ platforms:
     networks:
       - name: 'test-ag-aw'
         ipv4_address: '192.168.17.1'
+    etc_hosts: {aw.test.ansibleguy.net: '192.168.17.2'}
     groups: [grp_tester]
 
     # docker config
     docker_host: 'tcp://molecule-docker.local:2375'
-    purge_networks: true
     image: 'debian:12-slim'
     dockerfile: 'Dockerfile_debian12_systemd.j2'
     build_image: yes
@@ -36,7 +34,6 @@ platforms:
 
     # docker config
     docker_host: 'tcp://molecule-docker.local:2375'
-    purge_networks: true
     image: 'debian:12-slim'
     dockerfile: 'Dockerfile_debian12_systemd.j2'
     build_image: yes

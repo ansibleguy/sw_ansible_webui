@@ -45,8 +45,20 @@
   ansible.builtin.import_tasks: debian/requirements.yml
   tags: [config]
 
+- name: Ansible-WebUI | Config
+  ansible.builtin.import_tasks: debian/config.yml
+  tags: [config]
+
 - name: Ansible-WebUI | Install
   ansible.builtin.import_tasks: debian/install.yml
+
+- name: Ansible-WebUI | Backup
+  ansible.builtin.import_tasks: debian/backup.yml
+  tags: [config, backup]
+  when: AW_CONFIG.manage.backup | bool
+
+- name: Ansible-WebUI | Handlers
+  ansible.builtin.meta: flush_handlers
 
 # todo: implement serve-static via nginx ('AW_SERVE_STATIC')
 - name: Ansible-WebUI | Installing/Configuring nginx
@@ -60,12 +72,8 @@
 
     nginx:
       sites:
-        ansible_webui: "{{ AW_CONFIG.server.nginx | combine(aw_nginx_config_overrides, recursive=true) }}"
-
-- name: Ansible-WebUI | Backup
-  ansible.builtin.import_tasks: debian/backup.yml
-  tags: [config, backup]
-  when: AW_CONFIG.manage.backup | bool
+        ansiblewebui: "{{ AW_CONFIG.nginx | combine(aw_nginx_config_overrides, recursive=true) }}"
+  tags: [webserver]
 
 - name: Ansible-WebUI | Cleaning up temporary password file
   ansible.builtin.file:

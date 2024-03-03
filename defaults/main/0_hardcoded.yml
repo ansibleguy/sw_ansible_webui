@@ -11,7 +11,7 @@ AW_HC:
     collections: 'requirements_collections.yml'
   file:
     db: 'aw.db'
-    secret: 'secret.env'
+    secret: 'secret.sh'
   user: 'ansible-webui'
   config_vars_managed: ['AW_DB', 'AW_HOSTNAMES', 'AW_SECRET', 'AW_PATH_LOG']
 

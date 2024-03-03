@@ -9,7 +9,7 @@
       config:
         AW_HOSTNAMES: ['aw.test.ansibleguy.net', '192.168.17.2', '127.0.0.1']
         AW_SSH_KNOWN_HOSTS: '/etc/ssh/known_hosts'
-        AW_TIMEZONE: 'CET'
+        AW_PATH_PLAY: '/etc/play'
 
       requirements:
         pip: ['httpx']

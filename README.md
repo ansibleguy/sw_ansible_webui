@@ -80,10 +80,12 @@ Define the config as needed:
 Minimal config:
 
 ```yaml
-semaphore:
+ansible_webui:
   config:
     AW_HOSTNAMES: 'ansible.template.ansibleguy.net'
 ```
+
+Options:
 
 ```yaml
 ansible_webui:

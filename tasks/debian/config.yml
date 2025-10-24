@@ -15,6 +15,7 @@
     group: "{{ AW_HC.user }}"
   notify: AW-restart
   when: "'secret' in ansible_webui or not aw_secret_file.stat.exists"
+  no_log: true
 
 - name: Ansible-WebUI | Config | Environmental variables
   ansible.builtin.template:

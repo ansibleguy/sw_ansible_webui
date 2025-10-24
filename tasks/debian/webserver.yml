@@ -12,7 +12,6 @@
   changed_when: false
   register: aw_venv_py_version
 
-# todo: implement serve-static via nginx ('AW_SERVE_STATIC')
 - name: Ansible-WebUI | Installing/Configuring nginx
   ansible.builtin.import_role:
     name: ansibleguy.infra_nginx
@@ -27,14 +26,20 @@
         - '  root {{ venv_base }}/django/contrib/admin/;'
         - '  try_files $uri =404;'
         - '}'
-        - 'location ~ ^/static/fontawesomefree/ {'
-        - '  root {{ venv_base }}/fontawesomefree/;'
+        - 'location /static/dist/ {'
+        - '  alias {{ venv_base }}/oxl_ansible_webui/aw/static_prod/dist/;'
         - '  try_files $uri =404;'
         - '}'
-        - 'location ~ ^/static/ {'
-        - '  root {{ venv_base }}/ansibleguy-webui/aw/;'
+        - 'location /static/img/ {'
+        - '  alias {{ venv_base }}/oxl_ansible_webui/aw/static/img;'
         - '  try_files $uri =404;'
         - '}'
+        - 'location /static/css/ {'
+        - '  alias {{ venv_base }}/oxl_ansible_webui/aw/static/css;'
+        - '  try_files $uri =404;'
+        - '}'
+      proxy:
+        port: "{{ AW_CONFIG.config.AW_PORT }}"
 
     nginx:
       sites:

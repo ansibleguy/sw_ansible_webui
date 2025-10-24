@@ -10,7 +10,7 @@ Documentation=https://webui.ansibleguy.net/en/latest/
 Documentation=https://github.com/ansibleguy/webui
 
 [Service]
-ExecStart=/usr/local/sbin/ansible-webui-start.sh
+ExecStart=/usr/local/bin/ansible-webui-start.sh
 ExecReload=/bin/kill -HUP $MAINPID
 User={{ AW_HC.user }}
 Group={{ AW_HC.user }}

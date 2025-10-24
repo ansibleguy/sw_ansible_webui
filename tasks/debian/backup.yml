@@ -2,8 +2,8 @@
 
 - name: Ansible-WebUI | Backup | Script
   ansible.builtin.template:
-    src: 'templates/usr/local/sbin/ansible-webui-backup.sh.j2'
-    dest: '/usr/local/sbin/ansible-webui-backup.sh'
+    src: 'templates/usr/local/bin/ansible-webui-backup.sh.j2'
+    dest: '/usr/local/bin/ansible-webui-backup.sh'
     mode: 0750
 
 - name: Ansible-WebUI | Backup | Service & Timer

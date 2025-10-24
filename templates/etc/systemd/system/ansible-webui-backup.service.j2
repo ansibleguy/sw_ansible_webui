@@ -6,7 +6,7 @@ Description=Ansible-WebUI Backup
 Documentation=https://github.com/ansibleguy/sw_ansible_webui
 
 [Service]
-ExecStart=/usr/local/sbin/ansible-webui-backup.sh
+ExecStart=/usr/local/bin/ansible-webui-backup.sh
 
 {% if ansible_distribution_version == '10' %}
 StandardOutput=syslog

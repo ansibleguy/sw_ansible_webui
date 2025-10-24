@@ -1,8 +1,13 @@
 ---
 
+- name: Ansible-WebUI | Install | Dependencies
+  ansible.builtin.apt:
+    name: ['git', 'git-lfs', 'sshpass']
+    state: present
+
 - name: Ansible-WebUI | Install | Python3
   ansible.builtin.apt:
-    name: ['python3', 'python3-pip', 'python3-virtualenv', 'git', 'git-lfs']
+    name: ['python3', 'python3-virtualenv', 'python3-pip']
     state: present
 
 - name: Ansible-WebUI | Install
@@ -14,8 +19,8 @@
 
 - name: Ansible-WebUI | Install | Startup-Script
   ansible.builtin.template:
-    src: 'templates/usr/local/sbin/ansible-webui-start.sh.j2'
-    dest: '/usr/local/sbin/ansible-webui-start.sh'
+    src: 'templates/usr/local/bin/ansible-webui-start.sh.j2'
+    dest: '/usr/local/bin/ansible-webui-start.sh'
     mode: 0750
     owner: 'root'
     group: "{{ AW_HC.user }}"

@@ -10,10 +10,12 @@ defaults_aw:
     user: true
     backup: true
     auto_upgrade: true
+    ansible_cfg: true
 
   config:  # see: https://webui.ansibleguy.net/en/latest/usage/4_config.html#settings
     AW_HOSTNAMES: []
     AW_SECRET: "{{ lookup('password', tmp_pwd_file + '_mdb chars=ascii_letters,digits length=' + random_pwd_length) }}"
+    AW_PORT: 8000
 
   path:
     log: '/var/log/ansible-webui'
@@ -44,7 +46,7 @@ defaults_aw:
       cert:
         name:
         cn: 'Ansible-WebUI Certificate'
-        org: 'AnsibleGuy'
+        org: 'OXL'
 
       letsencrypt:
         email: ''

@@ -1,7 +1,6 @@
 ---
 
 AW_HC:
-  module_name: 'ansibleguy-webui'
   path:
     config: '/etc/ansible-webui'
     home: '/home/ansible-webui'

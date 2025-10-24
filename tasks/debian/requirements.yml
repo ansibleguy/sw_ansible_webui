@@ -4,9 +4,9 @@
   ansible.builtin.copy:
     content: |
       # ansible_managed
-      # ansibleguy-webui pip requirements
+      # oxl-ansible-webui pip requirements
 
-      {{ AW_HC.module_name }}
+      oxl-ansible-webui
 
       {% for module in AW_CONFIG.requirements.pip %}
       {{ module }}
@@ -23,7 +23,7 @@
       ---
 
       # ansible_managed
-      # ansibleguy-webui ansible-collection requirements
+      # oxl-ansible-webui ansible-collection requirements
 
       collections:{% if AW_CONFIG.requirements.collections | length == 0 %} []{% else %}
 
@@ -44,7 +44,7 @@
       ---
 
       # ansible_managed
-      # ansibleguy-webui ansible-roles requirements
+      # oxl-ansible-webui ansible-roles requirements
 
       roles:{% if AW_CONFIG.requirements.roles | length == 0 %} []{% else %}
 

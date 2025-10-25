@@ -1,5 +1,5 @@
 <a href="https://github.com/O-X-L/ansible-webui">
-  <img src="https://raw.githubusercontent.com/O-X-L/ansible-webui/latest/src/oxl-ansible-webui/aw/static/img/logo.svg" alt="AnsibleGuy-WebUI Logo" width="300"/>
+  <img src="https://raw.githubusercontent.com/O-X-L/ansible-webui/refs/heads/latest/src/oxl_ansible_webui/aw/static/img/logo.svg" alt="AnsibleGuy-WebUI Logo" width="300"/>
 </a>
 
 # Ansible Role - Ansible-WebUI

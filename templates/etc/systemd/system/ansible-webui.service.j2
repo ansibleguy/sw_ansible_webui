@@ -1,13 +1,13 @@
 # {{ ansible_managed }}
-# ansibleguy.sw_ansible_webui
+# oxlorg.ansible_webui
 
 [Unit]
 Description=Ansible WebUI
 Requires=network.target
 {% if AW_CONFIG.manage.webserver %}Wants=nginx.service{% endif %}
 
-Documentation=https://webui.ansibleguy.net/en/latest/
-Documentation=https://github.com/ansibleguy/webui
+Documentation=https://ansible-webui.oxl.app
+Documentation=https://github.com/O-X-L/ansible-webui
 
 [Service]
 ExecStart=/usr/local/bin/ansible-webui-start.sh

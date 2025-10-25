@@ -1,23 +1,23 @@
-<a href="https://github.com/ansibleguy/webui">
-  <img src="https://raw.githubusercontent.com/ansibleguy/webui/latest/src/ansibleguy-webui/aw/static/img/logo.svg" alt="AnsibleGuy-WebUI Logo" width="300"/>
+<a href="https://github.com/O-X-L/ansible-webui">
+  <img src="https://raw.githubusercontent.com/O-X-L/ansible-webui/latest/src/oxl-ansible-webui/aw/static/img/logo.svg" alt="AnsibleGuy-WebUI Logo" width="300"/>
 </a>
 
 # Ansible Role - Ansible-WebUI
 
-Role to provision [a basic WebUI for using Ansible](https://github.com/ansibleguy/webui) on a linux server.
+Role to provision [a basic WebUI for using Ansible](https://github.com/O-X-L/ansible-webui) on a linux server.
 
 **DISCLAIMER**: This WebUI is an **unofficial community project**! Do not confuse it with the vanilla [Ansible](https://ansible.com/) product!
 
-[![Lint](https://github.com/ansibleguy/sw_ansible_webui/actions/workflows/lint.yml/badge.svg)](https://github.com/ansibleguy/sw_ansible_webui/actions/workflows/lint.yml)
-[![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/standalone/roles/ansibleguy/sw_ansible_webui)
+[![Lint](https://github.com/O-X-L/ansible-role-ansible-webui/actions/workflows/lint.yml/badge.svg)](https://github.com/O-X-L/ansible-role-ansible-webui/actions/workflows/lint.yml)
+[![Ansible Galaxy](https://badges.oss.oxl.app/galaxy.badge.svg)](https://galaxy.ansible.com/ui/standalone/roles/oxlorg/ansible_webui)
 
 **Molecule Integration-Tests**:
 
-* Status: [![Molecule Test Status](https://badges.ansibleguy.net/sw_ansible_webui.molecule.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2) |
-[![Functional-Tests](https://github.com/ansibleguy/sw_ansible_webui/actions/workflows/integration_test_result.yml/badge.svg)](https://github.com/ansibleguy/sw_ansible_webui/actions/workflows/integration_test_result.yml)
-* Logs: [API](https://ci.ansibleguy.net/api/job/ansible-test-molecule-sw_ansible_webui/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) | [Short](https://badges.ansibleguy.net/log/molecule_sw_ansible_webui_test_short.log) | [Full](https://badges.ansibleguy.net/log/molecule_sw_ansible_webui_test.log)
+* Status: [![Molecule Test Status](https://badges.oss.oxl.app/sw_ansible_webui.molecule.svg)](https://github.com/O-X-L/ansible-role-oxl-cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2) |
+[![Functional-Tests](https://github.com/O-X-L/ansible-role-ansible-webui/actions/workflows/integration_test_result.yml/badge.svg)](https://github.com/O-X-L/ansible-role-ansible-webui/actions/workflows/integration_test_result.yml)
+* Logs: [API](https://ci.oss.oxl.app/api/job/ansible-test-molecule-sw_ansible_webui/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) | [Short](https://badges.oss.oxl.app/log/molecule_sw_ansible_webui_test_short.log) | [Full](https://badges.oss.oxl.app/log/molecule_sw_ansible_webui_test.log)
 
-Internal CI: [Tester Role](https://github.com/ansibleguy/_meta_cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
+Internal CI: [Tester Role](https://github.com/O-X-L/ansible-role-oxl-cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
 
 **Tested:**
 * Debian 12
@@ -28,13 +28,13 @@ Internal CI: [Tester Role](https://github.com/ansibleguy/_meta_cicd) | [Jobs API
 
 ```bash
 # latest
-ansible-galaxy role install git+https://github.com/ansibleguy/sw_ansible_webui
+ansible-galaxy role install git+https://github.com/O-X-L/ansible-role-ansible-webui
 
 # from galaxy
-ansible-galaxy install ansibleguy.sw_ansible_webui
+ansible-galaxy install oxlorg.ansible_webui
 
 # or to custom role-path
-ansible-galaxy install ansibleguy.sw_ansible_webui --roles-path ./roles
+ansible-galaxy install oxlorg.ansible_webui --roles-path ./roles
 
 # install dependencies
 ansible-galaxy install -r requirements.yml
@@ -67,7 +67,7 @@ Minimal config:
 ```yaml
 ansible_webui:
   config:
-    AW_HOSTNAMES: 'ansible.template.ansibleguy.net'
+    AW_HOSTNAMES: 'ansible.template.oxl.at'
 ```
 
 Options:
@@ -85,8 +85,8 @@ ansible_webui:
     collections: ['community.general']  # any ansible-collections (if persistent_requirements=true)
     roles: []  # any ansible-roles (if persistent_requirements=true)
 
-  config:  # for options see: https://webui.ansibleguy.net/en/latest/usage/4_config.html#settings
-    AW_HOSTNAMES: 'ansible.template.ansibleguy.net'
+  config:  # for options see: https://webui.oxl.at/en/latest/usage/4_config.html#settings
+    AW_HOSTNAMES: 'ansible.template.oxl.at'
     # AW_SECRET: '...'  # minimum 30 characters; random one will be used if none was provided
 
   ansible_config:  # /home/ansible-webui/ansible.cfg => if manage.ansible_cfg=true; see: https://docs.ansible.com/ansible/latest/reference_appendices/config.html
@@ -97,7 +97,7 @@ ansible_webui:
       context: 2
 
   nginx:
-    ...   # configure the webserver settings => see: https://github.com/ansibleguy/infra_nginx
+    ...   # configure the webserver settings => see: https://github.com/O-X-L/ansible-role-nginx
 ```
 
 You might want to use 'ansible-vault' to encrypt your passwords:
@@ -151,7 +151,7 @@ ansible-playbook -K -D -i inventory/hosts.yml playbook.yml -e debug=yes
 
 * **Note:** Most of the role's functionality can be opted in or out.
 
-  For all available options - see the default-config located in [the main defaults-file](https://github.com/ansibleguy/sw_ansible_webui/blob/latest/defaults/main/1_main.yml)!
+  For all available options - see the default-config located in [the main defaults-file](https://github.com/O-X-L/ansible-role-ansible-webui/blob/latest/defaults/main/1_main.yml)!
 
 
 * **Warning:** Not every setting/variable you provide will be checked for validity. Bad config might break the role!

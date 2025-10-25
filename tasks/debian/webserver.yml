@@ -14,7 +14,7 @@
 
 - name: Ansible-WebUI | Installing/Configuring nginx
   ansible.builtin.import_role:
-    name: ansibleguy.infra_nginx
+    name: oxlorg.nginx
   when: AW_CONFIG.manage.webserver | bool
   vars:
     venv_base: "{{ AW_CONFIG.path.venv }}/lib/{{ aw_venv_py_version.stdout_lines[0] }}/site-packages"

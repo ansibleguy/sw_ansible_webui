@@ -6,7 +6,7 @@
   tasks:
     - name: Checking if web-service is reachable & loading
       ansible.builtin.uri:
-        url: 'https://aw.test.ansibleguy.net/a/login/'
+        url: 'https://aw.test.oxl.at/a/login/'
         return_content: true
         validate_certs: false
       register: page
@@ -16,7 +16,7 @@
 
     - name: Checking if statics are working
       ansible.builtin.uri:
-        url: 'https://aw.test.ansibleguy.net/static/img/logo.svg'
+        url: 'https://aw.test.oxl.at/static/img/logo.svg'
         return_content: false
         validate_certs: false
       register: page_static

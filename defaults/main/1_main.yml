@@ -12,7 +12,7 @@ defaults_aw:
     auto_upgrade: true
     ansible_cfg: true
 
-  config:  # see: https://webui.ansibleguy.net/en/latest/usage/4_config.html#settings
+  config:  # see: https://ansible-webui.oxl.app/en/latest/usage/4_config.html#settings
     AW_HOSTNAMES: []
     AW_SECRET: "{{ lookup('password', tmp_pwd_file + '_mdb chars=ascii_letters,digits length=' + random_pwd_length) }}"
     AW_PORT: 8000
@@ -37,7 +37,7 @@ defaults_aw:
 
   ansible_config: {}
 
-  nginx:  # configure the webserver settings => see: https://github.com/ansibleguy/infra_nginx
+  nginx:  # configure the webserver settings => see: https://github.com/O-X-L/ansible-role-nginx
     domain: ''
     port_plain: 80
     port_ssl: 443

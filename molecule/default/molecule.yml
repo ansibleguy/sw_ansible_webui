@@ -14,7 +14,7 @@ platforms:
     networks:
       - name: 'test-ag-aw'
         ipv4_address: '192.168.17.1'
-    etc_hosts: {aw.test.ansibleguy.net: '192.168.17.2'}
+    etc_hosts: {aw.test.oxl.at: '192.168.17.2'}
     groups: [grp_tester]
     docker_host: 'tcp://molecule-docker.local:2375'
     image: 'ansible0guy/molecule:debian-latest'

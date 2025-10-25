@@ -7,14 +7,14 @@
 
     ansible_webui:
       config:
-        AW_HOSTNAMES: ['aw.test.ansibleguy.net', '192.168.17.2', '127.0.0.1']
+        AW_HOSTNAMES: ['aw.test.oxl.at', '192.168.17.2', '127.0.0.1']
         AW_SSH_KNOWN_HOSTS: '/etc/ssh/known_hosts'
         AW_PATH_PLAY: '/etc/play'
 
       requirements:
         pip: ['httpx']
         collections: ['ansible.utils', 'community.crypto', 'community.general']
-        roles: ['ansibleguy.infra_nftables']
+        roles: ['oxlorg.nftables']
 
   roles:
-    - ansibleguy.sw_ansible_webui
+    - oxlorg.ansible_webui

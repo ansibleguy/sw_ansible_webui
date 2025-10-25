@@ -7,4 +7,4 @@
   become: true
   gather_facts: yes
   roles:
-    - ansibleguy.sw_ansible_webui
+    - oxlorg.ansible_webui
